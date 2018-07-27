@@ -9,14 +9,13 @@ The impact of traffic flow volume of a specific location (longitude and latitude
 ## Data source
 The data will be the traffic volume count (number of vehicles towards every possible direction) by minute bin from 28k traffic observation stations of Department of Transportation.
 ## Technologies to be used
-###File storage<br>
-S3: more elastic, less expensive, availability and durability<br>
-###B atch processing<br>
+### File storage
+S3: more elastic, less expensive, availability and durability
+### Batch processing
 Spark: more mature and more third-party libraries
-###Real-time streaming<br>
-Kafka: simple and <br>
+### Real-time streaming
+Kafka: simple to use<br>
 Spark Streaming: support MapReduce<br>
-Cassandra: wide column store<br>
-Redis: key-value store, time series DBMS
+Cassandra: wide column store
 ## Proposed architecture
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
