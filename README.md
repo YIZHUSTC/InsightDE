@@ -1,28 +1,22 @@
 # Insight Data Engineering Project
 ## Project idea
-This project is proposed to monitor current and track historical traffic information for the purpose of providing better suggetions for a coming travel route.
+This project is proposed to preliminarily estimate the traffic flow volume in the coming hour of a specific location, based on real-time traffic direction and volume count from 28k traffic observation stations of Department of Transportation.
+## Project purpose
+The purpose of this project is to build a data pipeline that support a web application which can show both historical traffic flow volume and impact of future traffic. The real-time observed traffic flow volume data will be transformed, stored and served the web application.
 ## Use cases
-Suggest the potential route with shortest traveling time based on current and historical traffic flow.<br>
-Identify spots with frequent traffic incidents based on historical traffic data, and help to avoid those spots on route in some certain cases.
+The web application allows users to track the historical traffic flow volume on any observation station in a specific time.<br>
+The impact of traffic flow volume of a specific location (longitude and latitude) in the following minutes or hour can be estimated and shown as a heatmap.
+## Data source
+The data will be the traffic volume count (number of vehicles towards every possible direction) by minute bin from 28k traffic observation stations of Department of Transportation.
 ## Technologies to be used
-Traffic data:<br>
-Here Traffic API: https://developer.here.com/documentation/traffic/topics/what-is.html<br>
-Real-time streaming:<br>
-Spark Streaming<br>
-Kafka<br>
-redis/cassandra<br>
-PostgreSQL<br>
+###File storage<br>
+S3: more elastic, less expensive, availability and durability<br>
+###B atch processing<br>
+Spark: more mature and more third-party libraries
+###Real-time streaming<br>
+Kafka: simple and <br>
+Spark Streaming: support MapReduce<br>
+Cassandra: wide column store<br>
+Redis: key-value store, time series DBMS
 ## Proposed architecture
-
-
-## Project idea
-The idea of this project is to help suggesting the bid price of properties based on estimated and final sold price by obtaining historical data of similar real estate
-## Use cases
-Track historical sold price of specific properties<br>
-Suggest how much the buyers should bid (overbid or underbid)
-## Technologies to be used
-Redfin API<br>
-Spark Streaming<br>
-cassandra<br>
-PostgreSQL<br>
-## Proposed architecture
+![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
