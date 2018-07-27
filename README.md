@@ -8,7 +8,8 @@ The web application allows users to track the historical traffic flow volume on 
 The impact of traffic flow volume of a specific location (longitude and latitude) in the following minutes or hour can be estimated and shown as a heatmap, based on the relative geolocation of nearby observation stations.<br>
 Generate an alert if the local traffic is significantly more than usual.
 ## Main challenge
-Retrieving historical traffic volume and comparing to real-time traffic volume.
+Retrieving historical traffic volume, calculating statistic information and comparing to real-time traffic volume.<br>
+Combining the data with geolocation.
 ## Data source
 The data will be the traffic volume count (number of vehicles towards every possible direction) at hourly bases from 28k traffic observation stations of Department of Transportation. Data size is about ~10Gb per year in past years but can randomly generate more similar data for earlier years without records or simulated observation stations.<br>
 ## Technologies to be used
