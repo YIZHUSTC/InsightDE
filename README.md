@@ -21,6 +21,6 @@ Spark: more mature and more third-party libraries
 ### Real-time streaming
 Kafka: simple to use<br>
 Spark Streaming: support MapReduce<br>
-Cassandra: column-oriented, good for time-series data
+PostgreSQL: geolocation analysis
 ## Proposed architecture
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/infrastructure.png)
