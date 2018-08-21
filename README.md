@@ -23,4 +23,4 @@ Kafka: simple to use<br>
 Spark Streaming: support MapReduce<br>
 Cassandra: column-oriented, good for time-series data
 ## Proposed architecture
-![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/archi.png)
+![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/infrastructure.png)
