@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+      <!--<meta http-equiv="refresh" content="10">-->
+      <title>TrafficAdvisor</title>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+      <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <style type="text/css">
+         body {
+         padding: 0;
+         margin: 0;
+         }
+         html,
+         body,
+         #map {
+         height: 100%;
+         width: 100vw;
+         }
+         @keyframes fade {
+         from {
+         opacity: 0;
+         }
+         }
+         .blinking {
+         animation: fade 1s infinite alternate;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="map"></div>
+      <script type="text/javascript">
+         osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+             maxZoom: 17
+         });
+         var map = L.map('map');
+         map.setView([37.426325, -122.140985], 12);
+         map.addLayer(osm);
+         
+         var popup = L.popup();
+         
+         function onMapClick(e) {
+         
+         $.getJSON( "/search", {"coordinate": e.latlng.lat+","+e.latlng.lng})
+         .done(function(results) {
+         
+                 popup
+                 .setLatLng(e.latlng)
+                 .setContent("Nearest sensor: "+results.location+"</br>Current volume: "+results.current+" vehicle/h</br>Historic volume: "+results.historical+" vehicle/h</br>"+results.level+" traffic volume</br>Type of road: "+results.type+"</br>Highway: "+results.highway+"</br>"+results.lane+" lanes")
+                 .openOn(map);
+         });
+         
+         }
+         map.on('click', onMapClick);
+         
+         
+         
+         var points = JSON.parse('{{ points | tojson | safe }}');
+         
+         for (var i = 0; i < points.length; i++) {
+         
+             var point = {
+                 lat: points[i].latitude,
+                 lng: points[i].longitude,
+                 rad: points[i].extra
+             };
+             var circle = L.circle([point.lat, point.lng], point.rad, {
+                 stroke: false,
+                 fillColor: 'red',
+                 fillOpacity: 0.2,
+                 className: 'blinking'
+             }).addTo(map);
+         
+         }
+      </script>
+   </body>
+</html>
