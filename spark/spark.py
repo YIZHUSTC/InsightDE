@@ -22,8 +22,8 @@ def main():
 
     spark = SparkSession.builder \
             .appName("TRAFFIC") \
-            .config("spark.executor.cores", "6") \
-            .config("spark.executor.memory", "8gb") \
+            .config("spark.executor.cores", "4") \
+            .config("spark.executor.memory", "4gb") \
             .getOrCreate()
 
     sc=spark.sparkContext
@@ -31,8 +31,8 @@ def main():
 
     hadoop_conf=sc._jsc.hadoopConfiguration()
     hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-    hadoop_conf.set("fs.s3n.awsAccessKeyId", 'awsaccesskeyid')
-    hadoop_conf.set("fs.s3n.awsSecretAccessKey", 'awssecretaccesskey')
+    hadoop_conf.set("fs.s3n.awsAccessKeyId", 'awsAccessKeyId')
+    hadoop_conf.set("fs.s3n.awsSecretAccessKey", 'awsSecretAccessKey')
     
     trafficdata=sqlContext.read.csv("s3a://insighttraffic/dot_traffic_2015.txt", header="true")
     trafficdata.createOrReplaceTempView("trafficdf")    
@@ -46,9 +46,11 @@ def main():
     	traffic_volume_counted_after_1700_to_1800,traffic_volume_counted_after_1800_to_1900,traffic_volume_counted_after_1900_to_2000,\
     	traffic_volume_counted_after_2000_to_2100,traffic_volume_counted_after_2100_to_2200,traffic_volume_counted_after_2200_to_2300,\
     	traffic_volume_counted_after_2300_to_2400 FROM trafficdf")
+
     trafficdf = trafficdf.withColumn('id',sf.concat(sf.col('fips_state_code'),sf.lit('_'),sf.col('station_id'),sf.lit('_'),\
         sf.col('direction_of_travel_name')))
     trafficdf = trafficdf.select(trafficdf.columns[3:])
+
     
     stationdata=sqlContext.read.csv("s3a://insighttraffic/dot_traffic_stations_2015.csv", header="true")
     stationdata.createOrReplaceTempView("stationdf")
@@ -58,7 +60,6 @@ def main():
     stationdf = stationdf.withColumn('id',sf.concat(sf.col('fips_state_code'),sf.lit('_'),sf.col('station_id'),sf.lit('_'),\
         sf.col('direction_of_travel_name')))
     stationdf = stationdf.select(stationdf.columns[3:])
-
     stationTraffic = stationdf.join(trafficdf, 'id')
 
     stationTraffic=stationTraffic.select(stationTraffic.id,\
@@ -127,11 +128,8 @@ def main():
         'avgvolume00','avgvolume01','avgvolume02','avgvolume03','avgvolume04','avgvolume05','avgvolume06','avgvolume07',\
         'avgvolume08','avgvolume09','avgvolume10','avgvolume11','avgvolume12','avgvolume13','avgvolume14','avgvolume15',\
         'avgvolume16','avgvolume17','avgvolume18','avgvolume19','avgvolume20','avgvolume21','avgvolume22','avgvolume23')
-    trafficAvg.printSchema()
-    trafficAvg.show()
 
-
-    trafficAvg.write.jdbc(url = "jdbc:postgresql://52.35.209.191:5432/postgres",table = "traffic",mode="overwrite",\
+    trafficAvg.write.jdbc(url = "jdbc:postgresql://postgres-ip-address:5432/postgres",table = "traffic",mode="overwrite",\
         properties={"password":"postgres","user":"postgres"})
 
 

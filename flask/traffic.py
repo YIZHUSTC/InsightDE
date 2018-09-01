@@ -38,11 +38,11 @@ def search():
     latitude=coordinate.split(",")[0]
     longitude=coordinate.split(",")[1]
 
+
     point = 'POINT('+str(latitude)+' '+str(longitude)+')'
     cursor.execute('SELECT *, st_distance(ST_GeomFromText(%s, 4326), realtime.geom) \
         as distance FROM realtime ORDER BY distance LIMIT 1;', (point,))
     query = cursor.fetchone()
-
     results['location'] = query[1]
     results['latitude'] = query[2]
     results['longitude'] = query[3]
