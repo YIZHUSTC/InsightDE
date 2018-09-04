@@ -23,4 +23,4 @@ Kafka: simple to use<br>
 Spark Streaming: support MapReduce<br>
 PostgreSQL: geolocation analysis
 ## Proposed architecture
-![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/infrastructure.png)
+![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
