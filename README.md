@@ -8,7 +8,7 @@ Increased amount of vehicles will potentially bring more problems such as traffi
 Allows users to retrieve historical average traffic volume on the nearest traffic sensor based on the geolocation on a specific time or the changes within a specific time period.<br>
 The prediction of future traffic volume based on current traffic flow volume pattern and other factors can be used for adaptive toll fare/carpool system on congested roads to reduce potential traffic congestion, taxi fare prediction, navigation and providing suggestions for urban planners.<br>
 Generate alerts if the local traffic is significantly higher than normal.
-## Main challenge
+## Main challenges
 Retrieving historical traffic volume, calculating statistic information and comparing it with real-time traffic volume.<br>
 Finding correlation between traffic flow volume and multiple factors using machine learning.<br>
 Combining data with latitude and longitude, and allow geolocation query of users.
@@ -25,7 +25,7 @@ Spark Streaming: consume microbatches from Kafka and does real-time analysis<br>
 PostgreSQL + PostGIS extention: store data with geolocation for analysis/presentation/user query
 ### Front end
 Flask + Leaflet: map representation
-## Proposed architecture
+## Architecture
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
 The infrastructure consists of both batch processing and streaming processing. The historical data is stored in Amazon S3. In batch processing, Spark does the aggregation, filtration and profiling for the baseline of traffic volume patterns , and a linear regression model is trained for each sensor based on various features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL, and the regression model is stored back in S3. While in streaming processing, the simulated real-time data is ingested by Kafka, and consumed by Spark Streaming. Spark Streaming compares current data with historical data, and takes the trained model to predict traffic volume for next hour. The real-time data with geolocations is also maintained in PostgreSQL. And finally Flask is used to response to the user query and present the real-time traffic volume on the map.
 ## Demo
