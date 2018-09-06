@@ -14,7 +14,7 @@ Finding correlation between traffic flow volume and multiple factors using machi
 Combining data with latitude and longitude, and allow geolocation query of users.
 ## Data source
 The data will be the traffic volume count (number of vehicles towards every possible direction) at hourly bases from traffic observation sensors of Department of Transportation. Data size is about ~200 Gb per year in past years but can randomly generate data following the same pattern for earlier years without records or simulated observation stations, and for future real-time traffic data.<br>
-## Technologies to be used
+## Technologies used
 ### File storage
 S3: more elastic, less expensive, availability and durability
 ### Batch processing
@@ -29,5 +29,5 @@ Flask + Leaflet: map representation
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
 The infrastructure consists of both batch processing and streaming processing. The historical data is stored in Amazon S3. In batch processing, Spark does the aggregation, filtration and profiling for the baseline of traffic volume patterns , and a linear regression model is trained for each sensor based on various features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL, and the regression model is stored back in S3. While in streaming processing, the simulated real-time data is ingested by Kafka, and consumed by Spark Streaming. Spark Streaming compares current data with historical data, and takes the trained model to predict traffic volume for next hour. The real-time data with geolocations is also maintained in PostgreSQL. And finally Flask is used to response to the user query and present the real-time traffic volume on the map.
 ## Demo
-No live demo since EC2 instances were terminated!
+No live demo since EC2 instances were terminated!<br>
 [![Watch the video](https://lh3.googleusercontent.com/Ned_Tu_ge6GgJZ_lIO_5mieIEmjDpq9kfgD05wapmvzcInvT4qQMxhxq_hEazf8ZsqA=s180-rw)](https://www.youtube-nocookie.com/embed/O6t1U1-1ZRY?rel=0)
