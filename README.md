@@ -1,26 +1,34 @@
-# Insight Data Engineering Project
+
+# TrafficAdvisor: A Real-Time Traffic Monitoring System
+## - Insight Data Engineering Project
 ## Project idea
-This project is proposed to show real-time traffic flow volume and compare to historical traffic volume at a certain time of a specific location, as well as preliminarily analyze the correlation between traffic flow volume and multiple factors based on real-time traffic direction and volume count from traffic observation stations of Department of Transportation.
+This project is designed to present real-time traffic flow volume on the map and allow user to query current, historical average and predicted traffic volume and other road information from the nearest traffic sensor on any designated geolocation.
 ## Project purpose
-Increased amount of vehicles will potentially bring more problems such as traffic congestion, incidents and air pollution. The purpose of this project is to build a data pipeline that support a web application which can show both historical traffic flow volume and monitor real-time traffic, and the correlation between traffic flow volume with road type, lane number change, truck ratio, etc. The traffic flow volume data will be transformed, stored and served the web application, which is shown as a heatmap.
+Increased amount of vehicles will potentially bring more problems such as traffic congestion, incidents and air pollution. The purpose of this project is to build a data pipeline that support a web application shows the amount of real-time traffic volume on map, and other information upon request, including current and historical average traffic volume, the prediction of future traffic volume and static information of the sensor and road.
 ## Use cases
-The web application allows users to track the historical traffic flow volume on any observation station on a specific time or the changes within a specific time period.<br>
-The correlation between traffic flow volume and multiple factors can be used to improve road condition and/or adjust toll/carpool policy to reduce potential traffic congestion.<br>
-Generate an alert if the local traffic is significantly more than usual.
+Allows users to retrieve historical average traffic volume on the nearest traffic sensor based on the geolocation on a specific time or the changes within a specific time period.<br>
+The prediction of future traffic volume based on current traffic flow volume pattern and other factors can be used for adaptive toll fare/carpool system on congested roads to reduce potential traffic congestion, taxi fare prediction, navigation and providing suggestions for urban planners.<br>
+Generate alerts if the local traffic is significantly higher than normal.
 ## Main challenge
-Retrieving historical traffic volume, calculating statistic information and comparing to real-time traffic volume.<br>
-Finding correlation between traffic flow volume and multiple factors using classification and regression.<br>
-Combining the data with geolocation.
+Retrieving historical traffic volume, calculating statistic information and comparing it with real-time traffic volume.<br>
+Finding correlation between traffic flow volume and multiple factors using machine learning.<br>
+Combining data with latitude and longitude, and allow geolocation query of users.
 ## Data source
-The data will be the traffic volume count (number of vehicles towards every possible direction) at hourly bases from traffic observation stations of Department of Transportation. Data size is about ~2Gb per year in past years but can randomly generate more similar data for earlier years without records or simulated observation stations.<br>
+The data will be the traffic volume count (number of vehicles towards every possible direction) at hourly bases from traffic observation sensors of Department of Transportation. Data size is about ~200 Gb per year in past years but can randomly generate data following the same pattern for earlier years without records or simulated observation stations, and for future real-time traffic data.<br>
 ## Technologies to be used
 ### File storage
 S3: more elastic, less expensive, availability and durability
 ### Batch processing
-Spark: more mature and more third-party libraries
+Spark: more mature and more third-party libraries, Spark MLlib is used for modeling
 ### Real-time streaming
-Kafka: simple to use<br>
-Spark Streaming: support MapReduce<br>
-PostgreSQL: geolocation analysis
+Kafka: ingest data and produce tral-time data<br>
+Spark Streaming: consume microbatches from Kafka and does real-time analysis<br>
+PostgreSQL + PostGIS extention: store data with geolocation for analysis/presentation/user query
+### Front end
+Flask + Leaflet: map representation
 ## Proposed architecture
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
+The infrastructure consists of both batch processing and streaming processing. The historical data is stored in Amazon S3. In batch processing, Spark does the aggregation, filtration and profiling for the baseline of traffic volume patterns , and a linear regression model is trained for each sensor based on various features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL, and the regression model is stored back in S3. While in streaming processing, the simulated real-time data is ingested by Kafka, and consumed by Spark Streaming. Spark Streaming compares current data with historical data, and takes the trained model to predict traffic volume for next hour. The real-time data with geolocations is also maintained in PostgreSQL. And finally Flask is used to response to the user query and present the real-time traffic volume on the map.
+## Demo
+No live demo since EC2 instances were terminated!
+[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://youtu.be/O6t1U1-1ZRY)
