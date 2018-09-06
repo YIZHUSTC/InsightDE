@@ -1,4 +1,4 @@
-# TrafficAdvisor: A Real-Time Traffic Monitoring System
+# TrafficAdvisor: a Real-Time Traffic Monitoring System
 ## Insight Data Engineering Project
 ## Project idea
 This project is designed to present real-time traffic flow volume on the map and allow user to query current, historical average and predicted traffic volume and other road information from the nearest traffic sensor on any designated geolocation.
@@ -21,10 +21,11 @@ S3: more elastic, less expensive, availability and durability
 Spark: more mature and more third-party libraries, Spark MLlib is used for modeling
 ### Real-time streaming
 Kafka: ingest data and produce tral-time data<br>
-Spark Streaming: consume microbatches from Kafka and does real-time analysis<br>
+Spark Streaming: consume microbatches from Kafka and does real-time analysis
+### Database
 PostgreSQL + PostGIS extention: store data with geolocation for analysis/presentation/user query
 ### Front end
-Flask + Leaflet: map representation
+Flask + Leaflet: map presentation
 ## Architecture
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
 The infrastructure consists of both batch processing and streaming processing. The historical data is stored in Amazon S3. In batch processing, Spark does the aggregation, filtration and profiling for the baseline of traffic volume patterns , and a linear regression model is trained for each sensor based on various features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL, and the regression model is stored back in S3. While in streaming processing, the simulated real-time data is ingested by Kafka, and consumed by Spark Streaming. Spark Streaming compares current data with historical data, and takes the trained model to predict traffic volume for next hour. The real-time data with geolocations is also maintained in PostgreSQL. And finally Flask is used to response to the user query and present the real-time traffic volume on the map.
