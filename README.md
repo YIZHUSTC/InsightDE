@@ -1,6 +1,5 @@
-
 # TrafficAdvisor: A Real-Time Traffic Monitoring System
-## - Insight Data Engineering Project
+## Insight Data Engineering Project
 ## Project idea
 This project is designed to present real-time traffic flow volume on the map and allow user to query current, historical average and predicted traffic volume and other road information from the nearest traffic sensor on any designated geolocation.
 ## Project purpose
@@ -32,3 +31,5 @@ The infrastructure consists of both batch processing and streaming processing. T
 ## Demo
 No live demo since EC2 instances were terminated!
 [![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://youtu.be/O6t1U1-1ZRY)
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/O6t1U1-1ZRY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
