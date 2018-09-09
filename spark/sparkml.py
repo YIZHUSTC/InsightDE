@@ -43,11 +43,11 @@ def extract_label(record, idx):
 
 def main():
 
-    spark = SparkSession.builder.appName("TRAFFIC").config("spark.executor.cores", "4").config("spark.executor.memory", "4g").getOrCreate()
+    spark = SparkSession.builder.appName("TRAFFIC").config("spark.executor.cores", "6").config("spark.executor.memory", "6g").getOrCreate()
     sc = spark.sparkContext
     sqlContext = SQLContext(sc)
 
-    raw_data = sc.textFile("s3a://insighttraffic/head.csv")
+    raw_data = sc.textFile("s3a://insighttraffic/dot_traffic_2015.txt")
     header = raw_data.first()
     records = raw_data.filter(lambda line: line != header).map(lambda x: x.split(","))
     records.cache()
