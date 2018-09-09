@@ -30,7 +30,7 @@ Flask + Leaflet: map presentation
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
 This is a lambda architecture that consists of both batch processing and streaming processing.<br><br>
 Spark: aggregation, filtration, profiling for the baseline of traffic volume patterns and training a linear regression model for each sensor based on features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL with geolocation, and the regression model is stored in S3.<br><br>
-Kafka: ingestion and production of simulated real-time data.<br><br>
+Kafka: ingestion and production of simulated real-time data based on the historical data pattern.<br><br>
 Spark Streaming: consuption of simulated real-time data, comparison of current (real-time) data with historical average data and preliminarily labeling current traffic volume and prediction of traffic volume for next hour based on attributes of sensor and traffic volume pattern within past 24 hours with the trained model. The real-time data is stored in another table in PostgreSQL with geolocations.<br><br>
 Flask: Presentation of real-time traffic situation on the map where the high traffic volume is and response of user geolocation query from nearest sensor.
 ## Demo
