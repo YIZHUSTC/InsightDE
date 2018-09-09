@@ -17,11 +17,11 @@ def index():
     # All high traffic volume locations
     connection = psycopg2.connect(host = '127.0.0.1', database = 'postgres', user = 'postgres', password = 'postgres')
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM realtime WHERE level = %s;', ('High',))
+    cursor.execute('SELECT * FROM realtimetraffic WHERE level = %s;', ('High',))
     result = cursor.fetchall()
     for x in result:
-        points.append({"latitude": x[2], "longitude": x[3], "extra": x[7]-x[8]})
-    return render_template("index.html", title="TrafficAdvisor: Real-time Traffic Monitoring", points=points)
+        points.append({"latitude": x[2], "longitude": x[3], "extra": x[8]-x[9]})
+    return render_template("index.html", title="TrafficAdvisor: Real-Time Traffic Monitoring", points=points)
 
 
 
@@ -40,18 +40,20 @@ def search():
 
 
     point = 'POINT('+str(latitude)+' '+str(longitude)+')'
-    cursor.execute('SELECT *, st_distance(ST_GeomFromText(%s, 4326), realtime.geom) \
-        as distance FROM realtime ORDER BY distance LIMIT 1;', (point,))
+    cursor.execute('SELECT *, st_distance(ST_GeomFromText(%s, 4326), realtimetraffic.geom) \
+        as distance FROM realtimetraffic ORDER BY distance LIMIT 1;', (point,))
     query = cursor.fetchone()
     results['location'] = query[1]
     results['latitude'] = query[2]
     results['longitude'] = query[3]
-    results['lane'] = query[4]
-    results['type'] = query[5]
-    results['highway'] = query[6]
-    results['current'] = query[7]
-    results['historical'] = round(query[8])
-    results['level'] = query[9]
+    results['direction'] = query[4]
+    results['lane'] = query[5]
+    results['type'] = query[6]
+    results['highway'] = query[7]
+    results['current'] = query[8]
+    results['historical'] = round(query[9])
+    results['predicted'] = query[10]
+    results['level'] = query[11]
     
     return jsonify(results)
 
