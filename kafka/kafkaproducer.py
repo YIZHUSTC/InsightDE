@@ -1,23 +1,13 @@
 from kafka import KafkaProducer
-#import time
-#import json
-#import csv
-#import random
-#import numpy as np
-#from numpy.linalg import cholesky
 import os
 import boto
-#import boto3
 import pyspark
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession, SQLContext
 from pyspark.sql import functions
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
-#import pandas as pd
-#import pyspark.sql.functions as F
-#from pyspark.sql import functions as sf
-#from collections import OrderedDict
+
 
 def handler(message):
     producer = KafkaProducer(bootstrap_servers = 'Kafka-DNS:9092')
