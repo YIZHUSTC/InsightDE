@@ -13,7 +13,10 @@ Retrieving historical traffic volume, calculating statistic information and comp
 Finding correlation between traffic flow volume and multiple factors using machine learning, and prediction future traffic volume based on various features and trained model.<br>
 Combining data with latitude and longitude, and allow geolocation query of users.
 ## Data source
-The data will be the traffic volume at hourly bases from traffic observation sensors of Department of Transportation. Data size is about ~200 Gb per year in past years but can randomly generate data following the same pattern for earlier years without records or simulated observation stations or real-time traffic volume data.<br>
+The data will be the traffic volume at hourly bases from traffic observation sensors of Department of Transportation, including two following tables:<br> 
+Traffic volume table: station, traffic volume count at each hour of each day of each year, etc.<br>
+Station table: station location, latitude, longitude, type of road, lane counts, traffic direction, etc.<br>
+Data size is about ~200 Gb per year in past years but can randomly generate data following the same pattern with some fluctuation for earlier years without records or simulated observation stations or real-time traffic volume data.<br>
 ## Technologies used
 ### File storage
 S3: more elastic, less expensive, availability and durability
@@ -29,10 +32,21 @@ Flask + Leaflet: map presentation
 ## Architecture
 ![image](https://raw.githubusercontent.com/YIZHUSTC/InsightDE/master/architecture.png)
 This is a lambda architecture that consists of both batch processing and streaming processing.<br><br>
-Spark: aggregation, filtration, profiling for the baseline of traffic volume patterns and training a linear regression model for each sensor based on features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL with geolocation, and the regression model is stored in S3.<br><br>
-Kafka: ingestion and production of simulated real-time data based on the historical data pattern.<br><br>
-Spark Streaming: consuption of simulated real-time data, comparison of current (real-time) data with historical average data and preliminarily labeling current traffic volume and prediction of traffic volume for next hour based on attributes of sensor and traffic volume pattern within past 24 hours with the trained model. The real-time data is stored in another table in PostgreSQL with geolocations.<br><br>
-Flask: Presentation of real-time traffic situation on the map where the high traffic volume is and response of user geolocation query from nearest sensor.
+**Spark**: aggregation, filtration, profiling for the baseline of traffic volume patterns and training a linear regression model for each sensor based on features such as location, road type, traffic direction and traffic volume pattern within past 24 hours. The processed data is stored in PostgreSQL with geolocation, and the regression model is stored in S3.<br>
+Machine learning model: supervised learning with linear regression model consists of 177 features:<br>
+Categorical features: month, day of month, day of week, traffic direction, state, road type, lanes ⇒ convert to vector<br>
+Numeric features: traffic volume pattern in past 24 hours ⇒ log transformation<br>
+Label: traffic volume at a specific hour<br>
+LinearRegressionWithSGD.train(data, iterations=50, step=0.1, intercept=True)
+<br><br>
+**Kafka**: ingestion and production of simulated real-time data based on the historical data pattern.<br><br>
+**Spark Streaming**: consuption of simulated real-time data, comparison of current (real-time) data with historical average data and preliminarily labeling current traffic volume and prediction of traffic volume for next hour based on attributes of sensor and traffic volume pattern within past 24 hours with the trained model. The real-time data is stored in another table in PostgreSQL with geolocations.<br><br>
+**Flask**: Presentation of real-time traffic situation on the map where the high traffic volume is and response of user geolocation query from nearest sensor.
+## Cluster Configurations
+Spark cluster: 4 m4.large instance 8G memory, 100G disk Ubuntu 16<br>
+Kafka cluster: 4 m4.large instance 8G memory, 100G disk Ubuntu 16<br>
+Spark Streaming cluster: 4 m4.large instance 8G memory, 100G disk Ubuntu 16<br>
+PostgreSQL cluster: 2 m4.large instance 8G memory, 100G disk Ubuntu 16
 ## Demo
 [Live demo](http://54.148.44.73:5000/) (future availability is not guaranteed).<br>
 No live demo since EC2 instances were terminated!<br>
