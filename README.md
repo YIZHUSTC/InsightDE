@@ -34,6 +34,6 @@ Kafka: ingestion and production of simulated real-time data based on the histori
 Spark Streaming: consuption of simulated real-time data, comparison of current (real-time) data with historical average data and preliminarily labeling current traffic volume and prediction of traffic volume for next hour based on attributes of sensor and traffic volume pattern within past 24 hours with the trained model. The real-time data is stored in another table in PostgreSQL with geolocations.<br><br>
 Flask: Presentation of real-time traffic situation on the map where the high traffic volume is and response of user geolocation query from nearest sensor.
 ## Demo
-[Live demo](http://52.89.111.68:5000/) (future availability is not guaranteed).<br>
+[Live demo](http://54.148.44.73:5000/) (future availability is not guaranteed).<br>
 No live demo since EC2 instances were terminated!<br>
 [![Watch the video](https://lh3.googleusercontent.com/Ned_Tu_ge6GgJZ_lIO_5mieIEmjDpq9kfgD05wapmvzcInvT4qQMxhxq_hEazf8ZsqA=s180-rw)](https://www.youtube-nocookie.com/embed/PudAhKbvdb0)
